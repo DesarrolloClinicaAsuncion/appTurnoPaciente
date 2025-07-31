@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegistrarDocumento() {
     const [numero, setNumero] = useState("");
+    const navigate = useNavigate();
 
     const handleButtonClick = (valor) => {
         setNumero((prev) => prev + valor);
@@ -11,9 +13,13 @@ function RegistrarDocumento() {
         setNumero("");
     };
 
+    const handleEnviar = () => {
+        navigate("/seleccion"); // <-- 3. Redirige a la ruta deseada
+    };
+
     return (
         <>
-        <div className="container mt-5 text-center">
+        <div className="container mt-2 text-center">
             <h1>Seleccione su documento de identidad</h1>
             <div className="my-4">
                 <select className="form-select mb-3 w-auto mx-auto" aria-label="Default select example">
@@ -30,28 +36,28 @@ function RegistrarDocumento() {
                     readOnly
                 />
             </div>
-            <div className="container mt-5 text-center">
+            <div className="container mt-5 text-center p-4 w-100">
                 <div>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("9")}>9</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("8")}>8</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("7")}>7</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("9")}>9</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("8")}>8</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("7")}>7</button>
                 </div>
                 <div>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("6")}>6</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("5")}>5</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("4")}>4</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("6")}>6</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("5")}>5</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("4")}>4</button>
                 </div>
                 <div>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("3")}>3</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("2")}>2</button>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("1")}>1</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("3")}>3</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("2")}>2</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("1")}>1</button>
                 </div>
                 <div>
-                    <button className="btn btn-secondary m-2" onClick={() => handleButtonClick("0")}>0</button>
+                    <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("0")}>0</button>
                 </div>
                 <div>
-                    <button className="btn btn-danger m-2" onClick={handleBorrar}>Borrar</button>
-                    <button className="btn btn-success m-2">Enviar</button>
+                    <button className="btn btn-danger m-2 btn-lg" onClick={handleBorrar}>Borrar</button>
+                    <button className="btn btn-success m-2 btn-lg" onClick={handleEnviar}>Enviar</button>
                 </div>
             </div>
         </div>
