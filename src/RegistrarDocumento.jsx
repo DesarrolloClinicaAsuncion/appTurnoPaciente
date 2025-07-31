@@ -66,8 +66,8 @@ function RegistrarDocumento() {
                         <button className="btn btn-secondary m-2 btn-lg" onClick={() => handleButtonClick("0")}>0</button>
                     </div>
                     <div>
-                        <button className="btn btn-danger m-2 btn-lg" onClick={handleBorrar}>Borrar</button>
-                        <button className="btn btn-success m-2 btn-lg" onClick={handleEnviar}>Enviar</button>
+                        <button className=" btn m-2 btn-lg" onClick={handleBorrar}><img src="/close.svg" style={{ width: '85px', height: '85px'}} alt="" /></button>
+                        <button className="btn  m-2 btn-lg" onClick={handleEnviar}><img src="/ok.svg" style={{ width: 'px', height: '80px'}} alt="" /></button>
                     </div>
                 </div>
             </div>
