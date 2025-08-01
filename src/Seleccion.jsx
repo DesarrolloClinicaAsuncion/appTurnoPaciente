@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { crearTurno } from "./services/turnoServices"; // importa tu servicio
 
 function SeleccionarPrioridad() {
@@ -23,8 +23,8 @@ function SeleccionarPrioridad() {
             setNumeroTurno(data.numero_turno);
             setTurno(data.tipo_turno);
             setTipoDoc(data.tipo_documento);
-            //setFechaHora(new Date(data.fecha_hora).toLocaleString());
-            setFechaHora(data.fecha_hora);
+            setFechaHora(new Date(data.fecha_hora).toLocaleString());
+            //setFechaHora(data.fecha_hora);
             setShowModal(true);
         } catch (error) {
             alert("Error al asignar el turno");
@@ -38,18 +38,28 @@ function SeleccionarPrioridad() {
         navigate("/");
     };
 
+    useEffect(()=>{
+        const timer = setTimeout(()=>{
+            setShowModal(false);
+            navigate("/RegistrarDocumento");
+        },5000);
+        return()=> clearTimeout(timer);
+
+    }),[];
+
+
     return (
         <>
-            <div className="container w-75 mt-5 text-center">
-                <h1 className="text text-primary">Seleccione una opcion para su turno</h1>
+            <div className="container w-75 mt-5 text-center border border-1 shadow p-3 mb-5 bg-body rounded">
+                <h1 className="text text-info">Seleccione tipo de Atención</h1>
                 <button
-                    className="btn btn-primary m-5 btn-lg"
+                    className="btn btn-info m-5 btn-lg"
                     onClick={() => handleTurno("AN")}
                 >
                     Normal
                 </button>
                 <button
-                    className="btn btn-primary m-5 btn-lg"
+                    className="btn btn-info m-5 btn-lg"
                     onClick={() => handleTurno("AP")}
                 >
                     Prioritario
@@ -61,7 +71,8 @@ function SeleccionarPrioridad() {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title"></h5><h1 className="text-center"><strong>Turno:</strong> {turno}{numeroTurno}</h1>
+                                <h5 className="modal-title"></h5>
+                                <h1 className="text-center"><strong>Turno:</strong> {turno}{numeroTurno}</h1>
                                 <button type="button" className="btn-close" onClick={handleCerrar}></button>
                             </div>
                             <div className="modal-body">
