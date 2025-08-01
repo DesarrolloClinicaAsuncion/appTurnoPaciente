@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes,Route } from 'react-router-dom'  
 import './App.css'
-import Seleccion from './seleccion.jsx'
+import Seleccion from './Seleccion.jsx'
 import Navbar from './NavBar.jsx'
 import Registro from './RegistrarDocumento.jsx'   
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Registro />} />
-          <Route path="/seleccion" element={<Seleccion/>} />
+          <Route path="/Seleccion" element={<Seleccion />} />
         </Routes>
       </BrowserRouter>
     </>
