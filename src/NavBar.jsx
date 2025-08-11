@@ -1,22 +1,30 @@
 import './NavBar.css';
-function Navbar(){
-    return(
-<>
-       
-<nav className="navbar" id='navbar'>
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#">
-      <img src="/logo.png" 
-      alt="" 
-      width="150" 
-      height="50" 
-      className="d-inline-block align-text-top text-light" />
-      
-    </a>
-  </div>
-</nav>
+import Reloj from './Reloj';
+
+function Navbar() {
+  return (
+    <>
+  <nav className="navbar" id="navbar">
+    <div className="container-fluid">
+      <a className="navbar-brand text-light" href="#">
+        <img
+          src="/logo.png"
+          alt=""
+          width="150"
+          height="50"
+          className="d-inline-block align-text-top"
+        />
+      </a>
+
+      <h1 className="text-white mb-0">
+        <Reloj />
+      </h1>
+    </div>
+  </nav>
 </>
-    
-)}
+
+
+  )
+}
 
 export default Navbar;

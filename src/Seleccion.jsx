@@ -24,7 +24,6 @@ function SeleccionarPrioridad() {
             setTurno(data.tipo_turno);
             setTipoDoc(data.tipo_documento);
             setFechaHora(new Date(data.fecha_hora).toLocaleString());
-            //setFechaHora(data.fecha_hora);
             setShowModal(true);
         } catch (error) {
             alert("Error al asignar el turno");
