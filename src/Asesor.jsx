@@ -5,6 +5,11 @@ export default function Asesor() {
   const [turnoActual, setTurnoActual] = useState(null);
   const [llamadosAP, setLlamadosAP] = useState(0);
   const [botonDeshabilitado, setBotonDeshabilitado] = useState(false);
+  const [asesor, setAsesor] = useState("");
+
+  const handleAsesortoChange =  (event) =>{
+      setAsesor(event.target.value);
+  }
 
   const obtenerTurnos = async () => {
     const res = await fetch('http://172.31.2.92:3000/api/turnos/todos');
@@ -47,7 +52,8 @@ export default function Asesor() {
         body: JSON.stringify({
           documento: siguiente.documento,
           tipo_turno: siguiente.tipo_turmo,
-          numero_turno: siguiente.numero_turno
+          numero_turno: siguiente.numero_turno,
+          asesor: asesor
         })
       });
 
@@ -67,15 +73,28 @@ export default function Asesor() {
   return (
     <>
       <div className="mt-4 w-75 align-items-start px-4">
-        <h1 className="mb-4">Asesor</h1>
-        <input type="number" className="form form-control m-5 w-25" />
-        <div className="d-flex gap-4" style={{ height: '80vh' }}>
+        <div className="container">
+          <select 
+          className="form form-control m-5 w-25"
+          value = {asesor}
+          onChange={handleAsesortoChange}
+          >
+            <option value="">Selecciona un asesor</option>
+            <option value="Asesor 1">Asesor 1</option>
+            <option value="Asesor 2">Asesor 2</option>
+            <option value="Asesor 3">Asesor 3</option>
+            <option value="Asesor 4">Asesor 4</option>
+            <option value="Asesor 5">Asesor 5</option>
+          </select>
+        </div>
+        <h5 className="mb-3">Turnos actuales</h5>
+        <div className="d-flex gap-4" style={{ height: '50vh' }}>
           {/* Tabla con scroll */}
           <div
             className="flex-grow-1 border rounded shadow-sm p-3 bg-white"
             style={{ overflowY: 'auto' }}
           >
-            <h5 className="mb-3">Turnos actuales</h5>
+            
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -93,7 +112,14 @@ export default function Asesor() {
                     <td>{turno.documento}</td>
                     <td>{turno.tipo_turmo}</td>
                     <td>{turno.numero_turno}</td>
-                    <td>{new Date(turno.fecha_hora).toLocaleString('es-ES')}</td>
+                    <td>
+                      {turno.fecha_hora
+                        .replace('T', ' ')
+                        .replace('Z', '')
+                        .substring(0, 19)}
+                    </td>
+
+
                   </tr>
                 ))}
               </tbody>
