@@ -7,20 +7,22 @@ export default function Asesor() {
   const [botonDeshabilitado, setBotonDeshabilitado] = useState(false);
   const [asesor, setAsesor] = useState("");
 
-  const handleAsesortoChange =  (event) =>{
-      setAsesor(event.target.value);
+  const handleAsesortoChange = (event) => {
+    setAsesor(event.target.value);
   }
 
   const obtenerTurnos = async () => {
-    const res = await fetch('http://172.31.2.92:3000/api/turnos/todos');
+    const res = await fetch('http://localhost:3000/api/turnos/todos');
     const data = await res.json();
     setTurnos(data);
-
-    // Reactivar botón si hay turnos disponibles
-    if (data.length > 0) {
-      setBotonDeshabilitado(false);
-    }
   };
+
+  const handleClick = () => {
+    setBotonDeshabilitado(true);
+    setTimeout(() => {
+      setBotonDeshabilitado(false);
+    }, 30000);
+  }
 
   useEffect(() => {
     obtenerTurnos();
@@ -46,7 +48,7 @@ export default function Asesor() {
 
     if (siguiente) {
       // Registrar en tabla llamados
-      await fetch('http://172.31.2.92:3000/api/llamados', {
+      await fetch('http://localhost:3000/api/llamados', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -58,7 +60,7 @@ export default function Asesor() {
       });
 
       // Eliminar de la base de datos
-      await fetch(`http://172.31.2.92:3000/api/turnos/${siguiente.id}`, {
+      await fetch(`http://localhost:3000/api/turnos/${siguiente.id}`, {
         method: 'DELETE'
       });
 
@@ -74,10 +76,10 @@ export default function Asesor() {
     <>
       <div className="mt-4 w-75 align-items-start px-4">
         <div className="container">
-          <select 
-          className="form form-control m-5 w-25"
-          value = {asesor}
-          onChange={handleAsesortoChange}
+          <select
+            className="form form-control m-5 w-25"
+            value={asesor}
+            onChange={handleAsesortoChange}
           >
             <option value="">Selecciona un asesor</option>
             <option value="Asesor 1">Asesor 1</option>
@@ -94,7 +96,7 @@ export default function Asesor() {
             className="flex-grow-1 border rounded shadow-sm p-3 bg-white"
             style={{ overflowY: 'auto' }}
           >
-            
+
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -130,7 +132,7 @@ export default function Asesor() {
           <div className="d-flex flex-column align-items-end w-50 gap-3">
             <button
               className={`btn ${botonDeshabilitado ? 'btn-secondary' : 'btn-primary'}`}
-              onClick={obtenerSiguiente}
+              onClick={() => { obtenerSiguiente(); handleClick(); }}
               disabled={botonDeshabilitado}
             >
               Siguiente

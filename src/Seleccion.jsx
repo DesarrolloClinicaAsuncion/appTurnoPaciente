@@ -83,6 +83,7 @@ function SeleccionarPrioridad() {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn" onClick={handleCerrar}>
+                                    <img src="/logo.png" alt="logoClinica" style={{ width: '115px', height: '85px'}}/>
                                     <img src="/close.svg" style={{ width: '85px', height: '85px'}} alt="cerrar" />
                                 </button>
                             </div>
