@@ -45,7 +45,6 @@ export default function Asesor() {
     }
 
     if (siguiente) {
-      // 1️⃣ Actualizar estado a true en la base de datos
       const updateRes = await fetch(`http://localhost:3000/api/turnos/${siguiente.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -63,7 +62,7 @@ export default function Asesor() {
             asesor: asesor
           })
         });
-      
+
         await obtenerTurnos();
         setTurnoActual({ ...siguiente, estado: true });
       }
@@ -119,13 +118,17 @@ export default function Asesor() {
           <div className="card shadow-sm border-0 h-100">
             <div className="card-header bg-primary text-white fw-bold">
               Turnos actuales
+              {turnos.some(turno => turno.estado === false) && (
+                <span className="text-danger ms-2 fs-4">*</span>
+              )}
             </div>
+
             <div className="card-body p-0" style={{ maxHeight: "50vh", overflowY: "auto" }}>
               <table className="table table-hover table-sm mb-0">
                 <thead className="table-light" style={{ position: "sticky", top: 0 }}>
                   <tr>
-                    <th>Tipo DI</th>
-                    <th>DI</th>
+                    <th>Tipo ID</th>
+                    <th>ID</th>
                     <th>Prioridad</th>
                     <th>Turno</th>
                     <th>Fecha/Hora</th>
@@ -135,10 +138,9 @@ export default function Asesor() {
                   {turnos.map((t, i) => (
                     <tr
                       key={i}
-                      style={{
-                        backgroundColor: t.estado ? "#ffecb3" : "transparent" // Naranja suave
-                      }}
+                      className={t.estado ? "table-success fw-bold border-start border-4 border-success-subtle" : ""}
                     >
+
                       <td>{t.tipo_documento}</td>
                       <td>{t.documento}</td>
                       <td>{t.tipo_turmo}</td>
