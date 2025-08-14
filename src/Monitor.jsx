@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Carousel } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,42 +7,43 @@ import { Howl } from "howler";
 
 export default function CarouselAutoplay() {
   const carouselRef = useRef(null);
+  const carouselInstanceRef = useRef(null);
   const [llamados, setLlamados] = useState([]);
-  const ultimoLlamadoIdRef = useRef(null); // en lugar de estado
+  const [overlayActivo, setOverlayActivo] = useState(false);
+  const [ultimoLlamado, setUltimoLlamado] = useState(null);
+  const ultimoLlamadoIdRef = useRef(null);
 
   useEffect(() => {
     if (carouselRef.current) {
-      new Carousel(carouselRef.current, {
-        interval: 5000,
+      carouselInstanceRef.current = new Carousel(carouselRef.current, {
+        interval: 10000,
         ride: "carousel",
       });
     }
   }, []);
 
   const reproducirSonido = () => {
-  const sonido = new Howl({
-    src: ["/sound.mp3"],
-    volume: 1.0,
-    html5: true,
-  });
+    const sonido = new Howl({
+      src: ["/sound.mp3"],
+      volume: 1.0,
+      html5: true,
+    });
 
-  let contador = 0;
-
-  const reproducir = () => {
-    sonido.play();
-    contador++;
-    if (contador < 3) {
-      setTimeout(reproducir, 3000);
-    }
+    let contador = 0;
+    const reproducir = () => {
+      sonido.play();
+      contador++;
+      if (contador < 3) {
+        setTimeout(reproducir, 3000);
+      }
+    };
+    reproducir();
   };
-
-  reproducir();
-};
 
   useEffect(() => {
     const obtenerLlamados = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/llamados/todos");
+        const res = await fetch("http://192.168.10.64:3000/api/llamados/todos");
         const data = await res.json();
         setLlamados(data);
 
@@ -49,7 +51,23 @@ export default function CarouselAutoplay() {
           const ultimo = data[data.length - 1];
           if (ultimo.id !== ultimoLlamadoIdRef.current) {
             ultimoLlamadoIdRef.current = ultimo.id;
+            setUltimoLlamado(ultimo);
+
+            // Pausar carrusel
+            if (carouselInstanceRef.current) {
+              carouselInstanceRef.current.pause();
+            }
+
+            setOverlayActivo(true);
             reproducirSonido();
+
+            // Después de 10s ocultar overlay y reanudar
+            setTimeout(() => {
+              setOverlayActivo(false);
+              if (carouselInstanceRef.current) {
+                carouselInstanceRef.current.cycle();
+              }
+            }, 10000);
           }
         }
       } catch (error) {
@@ -60,13 +78,13 @@ export default function CarouselAutoplay() {
     obtenerLlamados();
     const intervalo = setInterval(obtenerLlamados, 2000);
     return () => clearInterval(intervalo);
-  }, []); // se ejecuta una vez, no se reinicia
+  }, []);
 
   return (
     <div className="container-fluid vh-100 p-0">
       <div className="row g-0 h-100">
-        {/* Imágenes */}
-        <div className="col-lg-9 col-md-8 col-sm-12 d-flex justify-content-center align-items-center">
+        {/* Imágenes con overlay */}
+        <div className="col-lg-9 col-md-8 col-sm-12 d-flex justify-content-center align-items-center position-relative">
           <div
             id="carouselExampleSlidesOnly"
             className="carousel slide carousel-fade custom-carousel"
@@ -85,10 +103,20 @@ export default function CarouselAutoplay() {
             </div>
           </div>
 
+          {/* Overlay */}
+          {overlayActivo && ultimoLlamado && (
+            <div className="overlay d-flex flex-column justify-content-center align-items-center">
+              <h1 className="text-white display-1 fw-bold">
+                {ultimoLlamado.tipo_turno} - {ultimoLlamado.numero_turno}
+              </h1>
+              <h3 className="text-warning fw-bold">{ultimoLlamado.asesor}</h3>
+            </div>
+          )}
+
           <style jsx>{`
             .custom-carousel {
-              width: 500px;
-              height: 400px;
+              width: 900px;
+              height: 700px;
               border-radius: 20px;
               overflow: hidden;
             }
@@ -96,6 +124,16 @@ export default function CarouselAutoplay() {
               width: 100%;
               height: 100%;
               object-fit: cover;
+            }
+            .overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.6);
+              z-index: 10;
+              text-align: center;
             }
           `}</style>
         </div>
@@ -131,7 +169,6 @@ export default function CarouselAutoplay() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

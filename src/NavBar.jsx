@@ -8,7 +8,7 @@ function Navbar() {
     <div className="container-fluid">
       <a className="navbar-brand text-light" href="#">
         <img
-          src="/logo3.png"
+          src="/logo.png"
           alt=""
           width="100"
           height="50"
