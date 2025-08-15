@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { crearTurno } from "./services/turnoServices"; // importa tu servicio
 
+
 function SeleccionarPrioridad() {
     const location = useLocation();
     const navigate = useNavigate();

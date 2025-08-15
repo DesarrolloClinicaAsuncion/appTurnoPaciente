@@ -116,12 +116,18 @@ export default function Asesor() {
         {/* Tabla de turnos actuales */}
         <div className="col-lg-6">
           <div className="card shadow-sm border-0 h-100">
-            <div className="card-header bg-primary text-white fw-bold">
+            <div
+              className={`card-header fw-bold ${turnos.some(turno => turno.estado === false)
+                  ? "bg-warning text-dark"
+                  : "bg-primary text-white"
+                }`}
+            >
               Turnos actuales
               {turnos.some(turno => turno.estado === false) && (
                 <span className="text-danger ms-2 fs-4">*</span>
               )}
             </div>
+
 
             <div className="card-body p-0" style={{ maxHeight: "50vh", overflowY: "auto" }}>
               <table className="table table-hover table-sm mb-0">
@@ -187,7 +193,7 @@ export default function Asesor() {
         {/* Últimos llamados */}
         <div className="col-lg-3">
           <div className="card shadow-sm border-0 h-100">
-            <div className="card-header bg-warning fw-bold">
+            <div className="card-header bg-info fw-bold">
               Últimos llamados
             </div>
             <div className="card-body p-0">

@@ -16,9 +16,9 @@ function Navbar() {
         />
       </a>
 
-      <h1 className="text-white mb-0  m-2 p-2">
+      <h3 className="text-white mb-0  m-2 p-2">
         <Reloj/>
-      </h1>
+      </h3>
     </div>
   </nav>
 </>
